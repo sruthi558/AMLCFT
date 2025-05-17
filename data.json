@@ -1,0 +1,174 @@
+/**
+ * Paste one or more documents here
+ */
+{
+  "code": "TY 1.1",
+  "total_df": [
+    {
+      "Customer ID": "CUST147",
+      "Nature of account": "Individual",
+      "Customer Profile": "Others",
+      "NPO/Charity": "No",
+      "Real estate agent/dealer": "No",
+      "Precious Metal Dealer": "No",
+      "PAN": "Yes",
+      "Type of account": "Savings Account",
+      "Account Number": "7243077170",
+      "Acc_Opening_Date": {
+        "$date": "2015-08-31T00:00:00.000Z"
+      },
+      "Transaction Amount": 931867,
+      "Transaction Date": {
+        "$date": "2021-10-04T00:00:00.000Z"
+      },
+      "Transaction Type": "Cash",
+      "Transaction Category": "Deposits",
+      "Transaction Currency": "INR",
+      "ticket_id": "3fc02e03-8036-479e-97d1-ecd92ddfbe9d",
+      "status": {
+        "mlro_officer": null,
+        "cm_officer": null,
+        "agm_officer": null,
+        "dgm_officer": null
+      },
+      "allocate_to": null,
+      "created_on": null,
+      "updated_on": null
+    },
+    {
+      "Customer ID": "CUST294",
+      "Nature of account": "Individual",
+      "Customer Profile": "Others",
+      "NPO/Charity": "No",
+      "Real estate agent/dealer": "No",
+      "Precious Metal Dealer": "No",
+      "PAN": "Yes",
+      "Type of account": "Savings Account",
+      "Account Number": "2754960463",
+      "Acc_Opening_Date": {
+        "$date": "2010-02-26T00:00:00.000Z"
+      },
+      "Transaction Amount": 956617,
+      "Transaction Date": {
+        "$date": "2021-10-02T00:00:00.000Z"
+      },
+      "Transaction Type": "Cash",
+      "Transaction Category": "Deposits",
+      "Transaction Currency": "INR",
+      "ticket_id": "de9fd262-84af-4ded-985e-31a33bcf325d",
+      "status": {
+        "mlro_officer": null,
+        "cm_officer": null,
+        "agm_officer": null,
+        "dgm_officer": null
+      },
+      "allocate_to": null,
+      "created_on": null,
+      "updated_on": null
+    },
+    {
+      "Customer ID": "CUST297",
+      "Nature of account": "Individual",
+      "Customer Profile": "Others",
+      "NPO/Charity": "No",
+      "Real estate agent/dealer": "No",
+      "Precious Metal Dealer": "No",
+      "PAN": "Yes",
+      "Type of account": "Savings Account",
+      "Account Number": "6877981759",
+      "Acc_Opening_Date": {
+        "$date": "2012-01-30T00:00:00.000Z"
+      },
+      "Transaction Amount": 946918,
+      "Transaction Date": {
+        "$date": "2021-10-20T00:00:00.000Z"
+      },
+      "Transaction Type": "Cash",
+      "Transaction Category": "Deposits",
+      "Transaction Currency": "INR",
+      "ticket_id": "92e25947-4cee-479b-9ebd-884e17904c3c",
+      "status": {
+        "mlro_officer": null,
+        "cm_officer": null,
+        "agm_officer": null,
+        "dgm_officer": null
+      },
+      "allocate_to": null,
+      "created_on": null,
+      "updated_on": null
+    }
+  ],
+
+  "count_df_gt_1": [
+    {
+      "Customer ID": "CUST147",
+      "Number of transactions": 2,
+      "ticket_id": "8d1e16bf-5c1d-4d95-bec1-43ab635e0956",
+      "status": {
+        "mlro_officer": null,
+        "cm_officer": null,
+        "agm_officer": null,
+        "dgm_officer": null
+      },
+      "allocate_to": null,
+      "created_on": null,
+      "updated_on": null
+    },
+    {
+      "Customer ID": "CUST294",
+      "Number of transactions": 3,
+      "ticket_id": "3f8cd3c4-b7ec-4ca9-93ab-65e43f9fb400",
+      "status": {
+        "mlro_officer": null,
+        "cm_officer": null,
+        "agm_officer": null,
+        "dgm_officer": null
+      },
+      "allocate_to": null,
+      "created_on": null,
+      "updated_on": null
+    },
+    {
+      "Customer ID": "CUST297",
+      "Number of transactions": 2,
+      "ticket_id": "72cef6a6-1900-42ee-92d2-0ff7edde5988",
+      "status": {
+        "mlro_officer": null,
+        "cm_officer": null,
+        "agm_officer": null,
+        "dgm_officer": null
+      },
+      "allocate_to": null,
+      "created_on": null,
+      "updated_on": null
+    },
+    {
+      "Customer ID": "CUST148",
+      "Number of transactions": 2,
+      "ticket_id": "7d35cd9f-888f-42a4-b068-c528251476df",
+      "status": {
+        "mlro_officer": null,
+        "cm_officer": null,
+        "agm_officer": null,
+        "dgm_officer": null
+      },
+      "allocate_to": null,
+      "created_on": null,
+      "updated_on": null
+    },
+    {
+      "Customer ID": "CUST463",
+      "Number of transactions": 3,
+      "ticket_id": "f9fdd25b-7d9d-44b7-bffb-dd0bd8416fe2",
+      "status": {
+        "mlro_officer": null,
+        "cm_officer": null,
+        "agm_officer": null,
+        "dgm_officer": null
+      },
+      "allocate_to": null,
+      "created_on": null,
+      "updated_on": null
+    }
+  ]
+}

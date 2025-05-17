@@ -1,0 +1,203 @@
+
+<div class="header-container fixed-top">
+    <header class="header navbar navbar-expand-sm">
+        <ul class="navbar-item theme-brand flex-row text-center">
+
+
+            <li class="nav-item theme-text d-sm-none d-md-block">
+                <a href="{% if role == 'CM/SM' %}{{ url_for('CM_SM_dashboard') }}{% elif role == 'AGM'or ROLE == 'AGM' %}{{ url_for('AGMdashboard') }}{% elif role == 'DGM/PO' or ROLE == 'DGM' %}{{ url_for('DGMdashboard') }}{% elif role == 'BranchMakers'  %}{{ url_for('branchmakers') }}{% elif role == 'ROS' %}{{ url_for('ROSDashboard') }}{% elif role == 'MLRO' %}{{ url_for('MLROdashboard') }}{% elif role == 'IT Officer' %}{{ url_for('ITdashboard') }}{% elif role == 'SDN/USER' %}{{ url_for('SDN_user') }}{% endif %}"
+                    class="nav-link">
+                    ZenEye
+                </a>
+            </li>
+        </ul>
+
+        <ul class="navbar-item flex-row ml-md-auto">
+            <li class="nav-item dropdown notification-dropdown">
+                <a href="javascript:void(0);" class="nav-link dropdown-toggle" id="notificationDropdown"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="feather feather-bell">
+                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                        <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                    </svg>
+                    {% if role != 'BranchMakers' and role != 'IT Officer' %}
+
+                    {% if notify['pendingcount'] > 0 or notify['unsuffeccientcount'] > 0 or notify['verifyClosedcount']
+                    > 0 or notify['sentBackClosed'] or notify['offlineCases'] > 0 %}
+
+                    <span class="badge badge-success"></span>
+                    {% endif %}
+
+                    {% endif %}
+                </a>
+                <div class="dropdown-menu position-absolute" aria-labelledby="notificationDropdown">
+                    <div class="notification-scroll">
+
+                        {% if role != 'BranchMakers' and role != 'IT Officer' %}
+
+                        {% for key,value in notify.items() %}
+                        {% if value > 0 %}
+                        <div class="dropdown-item">
+                            <div class="media">
+
+                                <div class="media-body">
+                                    <div class="notification-para"><span class="user-name">
+                                            {{ value }}
+                                        </span>{% if key == 'pendingcount' %}
+                                        New Cases rose today
+                                        {% endif %}
+
+                                        {% if key == 'unsuffeccientcount' %}
+                                        Cases sent back by higher Officer
+                                        {% endif %}
+
+                                        {% if key == 'verifyClosedcount' %}
+                                        remaining Cases need to be verifyed
+                                        {% endif %}
+
+                                        {% if key == 'sentBackClosed' %}
+                                        Closed Cases sent back by higher Officer to re-check it
+                                        {% endif %}
+                                        
+                                        {% if key == 'offlineCases' %}
+                                        New Offline Cases rose today
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+            </li>
+            <li class="nav-item dropdown user-profile-dropdown">
+                <a href="javascript:void(0);" class="nav-link dropdown-toggle user" id="userProfileDropdown"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    {% if role == 'IT Officer'%}
+
+                    {% if 'image' in ituser %}
+                    <img src="data:image/png;base64,{{ ituser['image'] }}" alt="avatar" width="100" height="100">
+                    {% else %}
+                    <img src="../static/assets/img/avatar.jpg" alt="avatar" width="100" height="100">
+                    {% endif %}
+
+                    {% endif %}
+
+                    {% if role == 'MLRO'%}
+
+                    {% if 'image' in mlrouser %}
+                    <img src="data:image/png;base64,{{ mlrouser['image'] }}" alt="avatar" width="100" height="100">
+                    {% elif 'image' in allImages %}
+                        <img src="data:image/png;base64,{{ allImages['image'] }}" alt="avatar" width="100" height="100">
+                    {% else %}
+                        <img src="../static/assets/img/avatar.jpg" alt="avatar" width="100" height="100">
+                    {% endif %}
+                
+
+                    {% endif %}
+
+                    {% if role == 'CM/SM'%}
+
+                    {% if 'image' in cmuser %}
+                    <img src="data:image/png;base64,{{ cmuser['image'] }}" alt="avatar" width="100" height="100">
+                    {% elif 'image' in allImages %}
+                        <img src="data:image/png;base64,{{ allImages['image'] }}" alt="avatar" width="100" height="100">
+                    {% else %}
+                        <img src="../static/assets/img/avatar.jpg" alt="avatar" width="100" height="100">
+                    {% endif %}
+                
+
+                    {% endif %}
+                    
+                    
+                    {% if role == 'AGM' or ROLE == 'AGM'%}
+
+                    {% if 'image' in agmuser %}
+                    <img src="data:image/png;base64,{{ agmuser['image'] }}" alt="avatar" width="100" height="100">
+                    {% elif 'image' in allImages %}
+                        <img src="data:image/png;base64,{{ allImages['image'] }}" alt="avatar" width="100" height="100">
+                    {% else %}
+                        <img src="../static/assets/img/avatar.jpg" alt="avatar" width="100" height="100">
+                    {% endif %}
+                
+
+                    {% endif %}
+
+
+                    {% if role == 'DGM/PO' or ROLE == 'DGM'%}
+
+                    {% if 'image' in dgmuser %}
+                    <img src="data:image/png;base64,{{ dgmuser['image'] }}" alt="avatar" width="100" height="100">
+                    {% elif 'image' in allImages %}
+                        <img src="data:image/png;base64,{{ allImages['image'] }}" alt="avatar" width="100" height="100">
+                    {% else %}
+                        <img src="../static/assets/img/avatar.jpg" alt="avatar" width="100" height="100">
+                    {% endif %}
+
+                    {% endif %}
+
+                    {% if role == 'BranchMakers' %}
+
+                    {% if 'image' in branchmakeruser %}
+                    <img src="data:image/png;base64,{{ branchmakeruser['image'] }}" alt="avatar" width="100" height="100">
+                    {% elif 'image' in allImages %}
+                        <img src="data:image/png;base64,{{ allImages['image'] }}" alt="avatar" width="100" height="100">
+                    {% else %}
+                        <img src="../static/assets/img/avatar.jpg" alt="avatar" width="100" height="100">
+                    {% endif %}
+
+                    {% endif %}
+
+                    {% if role == 'ROS' %}
+
+                    {% if 'image' in rosuser %}
+                    <img src="data:image/png;base64,{{ rosuser['image'] }}" alt="avatar" width="100" height="100">
+                    {% elif 'image' in allImages %}
+                        <img src="data:image/png;base64,{{ allImages['image'] }}" alt="avatar" width="100" height="100">
+                    {% else %}
+                        <img src="../static/assets/img/avatar.jpg" alt="avatar" width="100" height="100">
+                    {% endif %}
+
+                    {% endif %}
+                    {% if role == 'SDN/USER'%}
+                    {% if 'image' in sdnuser %}
+                    <img src="data:image/png;base64,{{ sdnuser['image'] }}" alt="avatar" width="100" height="100">
+                    {% elif 'image' in allImages %}
+                        <img src="data:image/png;base64,{{ allImages['image'] }}" alt="avatar" width="100" height="100">
+                    {% else %}
+                        <img src="../static/assets/img/avatar.jpg" alt="avatar" width="100" height="100">
+                    {% endif %}
+                    {% endif %}
+                </a>
+                <div class="dropdown-menu position-absolute" aria-labelledby="userProfileDropdown">
+                    <div class="">
+                        <div class="dropdown-item">
+                            <a class=""
+                                href="{% if role == 'CM/SM' %}{{ url_for('profile_CM_SM') }}{% elif role == 'AGM'or ROLE == 'AGM' %}{{ url_for('profileAGM') }}{% elif role == 'DGM/PO' or ROLE == 'DGM' %}{{ url_for('profileDGM') }}{% elif role == 'BranchMakers'  %}{{ url_for('profileBranchMaker') }}{% elif role == 'ROS' %}{{ url_for('profileROS') }}{% elif role == 'MLRO' %}{{ url_for('profile') }}{% elif role == 'IT Officer' %}{{ url_for('profileIT') }}{% elif role == 'SDN/USER' %}{{ url_for('profileSDN') }}{% endif %}">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="feather feather-user">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="12" cy="7" r="4"></circle>
+                                </svg>
+                                My Profile</a>
+                        </div>
+
+                    </div>
+                    <div class="dropdown-item">
+                        <a class="" href="{{ url_for('logout') }}"><svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" class="feather feather-log-out">
+                                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                                <polyline points="16 17 21 12 16 7"></polyline>
+                                <line x1="21" y1="12" x2="9" y2="12"></line>
+                            </svg>
+                            Sign Out</a>
+                    </div>
+                </div>
+</div>

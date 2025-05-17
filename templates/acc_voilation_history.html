@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+{% include 'metaData.html' %}
+    
+  
+
+    <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM STYLES -->
+    <style>
+       .layout-px-spacing {
+            min-height: calc(100vh - 166px)!important;
+        }
+        .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+            color:white;
+            background-color: #00579C;
+            border-color: #DEE2E6 #DEE2E6 #fff;
+        }
+        
+        .card-title {
+    
+    padding: 0px 0.75rem;
+    font-size: 0.9rem;
+}
+.btn{
+  box-shadow: none;
+  background-color: transparent;
+  
+}
+.btn:hover{
+  box-shadow: none;
+  background-color: transparent;
+  border-color: transparent;
+}
+    /* Style the input box */
+    .form-control-sm {
+      width: 200px;
+      /* Set your desired width */
+     
+      font-size: 14px;
+      border: 1px solid #ccc!important;
+      border-radius: 4px;
+      background-color: rgb(251, 255, 254);
+    }
+    .form-control {
+      border: 1px solid #ccc!important;
+    }
+    .form-control:hover {
+      border: 1px solid #ccc!important;
+    }
+    tr:not(:first-child):hover {
+    transform: none!important;
+  }
+    .input-group-text {
+    
+    padding: 0px 0.75rem;
+    font-size: 0.9rem;
+}
+    /* Style the placeholder text */
+    ::placeholder {
+      color: #999;
+      /* Customize the placeholder color */
+    }
+    
+    /* date picker ends*/
+
+    .text-primary {
+      color: #00579c !important;
+    }
+  .form-control-sm:hover {
+    border: 1px solid #ced4da !important;
+}
+
+    .btn-primary {
+      background-color: #00579c !important;
+      border-color: #00579c !important;
+    }
+
+    .btn-danger {
+      background-color: #df2233 !important;
+    }
+
+    .page-item.active .page-link {
+      background-color: #00579c !important;
+    }
+
+    .layout-px-spacing {
+      min-height: calc(100vh - 166px) !important;
+    }
+
+    .paths:hover {
+      text-decoration: underline;
+    }
+
+    #select-all {
+      cursor: pointer;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      width: 20px;
+      height: 20px;
+      background-color: #ffffff;
+      border-radius: 50%;
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    .checkbox {
+      cursor: pointer;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      width: 20px;
+      height: 20px;
+      background-color: #8080805b;
+      border-radius: 50%;
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    .checkbox:checked {
+      border: 2px solid rgb(0, 119, 255);
+      background: url('../static/assets/img/tick-svgrepo-com.png');
+      background-size: 100% 100%;
+      /* Make sure the image covers the entire checkbox */
+    }
+
+    .checkbox:active {
+      border: 2px solid rgb(0, 119, 255);
+
+      background: url('../static/assets/img/tick-svgrepo-com.png');
+      /* Set the background image when the checkbox is clicked */
+      background-size: 100% 100%;
+      /* Make sure the image covers the entire checkbox */
+    }
+
+    tr {
+      transition: all 0.1s ease-in-out;
+    }
+
+    tr:not(:first-child):hover {
+      transform: scale(1.01);
+    }
+
+    th:first-child::after {
+      content: "" !important;
+    }
+
+    th:first-child::before {
+      content: "" !important;
+    }
+
+    td,
+    th {
+      padding: 8px 15px !important;
+      border: none !important;
+      border-bottom: 2px solid #00000033 !important;
+      text-align: left !important;
+    }
+    th{
+        background-color: #00579c;
+        color: white;
+    }
+    a{
+        text-decoration: none !important;
+    }
+    
+   
+.dropdown-submenu {
+    position: relative;
+}
+
+.dropdown-submenu>.dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-top: -6px;
+    margin-left: -1px;
+    -webkit-border-radius: 0 6px 6px 6px;
+    -moz-border-radius: 0 6px 6px;
+    border-radius: 0 6px 6px 6px;
+}
+
+.dropdown-submenu:hover>.dropdown-menu {
+    display: block;
+}
+
+.dropdown-submenu>a:after {
+    display: block;
+    content: " ";
+    float: right;
+    width: 0;
+    height: 0;
+    border-color: transparent;
+    border-style: solid;
+    border-width: 5px 0 5px 5px;
+    border-left-color: #ccc;
+    margin-top: 5px;
+    margin-right: -10px;
+}
+
+.dropdown-submenu:hover>a:after {
+    border-left-color: #fff;
+}
+
+.dropdown-submenu.pull-left {
+    float: none;
+}
+
+.dropdown-submenu.pull-left>.dropdown-menu {
+    left: -100%;
+    margin-left: 10px;
+    -webkit-border-radius: 6px 0 6px 6px;
+    -moz-border-radius: 6px 0 6px 6px;
+    border-radius: 6px 0 6px 6px;
+}
+.leftSide{
+  right: 100% !important;
+  left: auto !important;
+}
+  
+
+
+        @media (min-width: 300px){
+            .navbar-expand-lg .navbar-collapse {
+               display: -ms-flexbox!important;
+               display: flex!important;
+               -ms-flex-preferred-size: auto;
+               flex-basis: auto;
+           }
+                   }
+    </style>
+    
+    <script>
+        $(document).ready(function(){
+          $(".navbar-nav .dropdown").on("show.bs.dropdown", function(){
+            var navbar = $(this).closest('.navbar');
+            navbar.css("margin-bottom", "200px"); // Adjust the value as needed
+          });
+    
+          $(".navbar-nav .dropdown").on("hide.bs.dropdown", function(){
+            var navbar = $(this).closest('.navbar');
+            navbar.css("margin-bottom", ""); // Reset to default
+          });
+        });
+      </script>
+    
+  
+
+    <!-- END PAGE LEVEL PLUGINS/CUSTOM STYLES -->
+
+</head>
+<body>
+  <!-- BEGIN LOADER -->
+  <div id="load_screen">
+    <div class="loader">
+      <div class="loader-content">
+        <div class="spinner-grow align-self-center"></div>
+      </div>
+    </div>
+  </div>
+  <!--  END LOADER -->
+
+  <!--  BEGIN NAVBAR  -->
+  {% include 'header.html' %}
+
+  <!--  END NAVBAR  -->
+
+  <!--  BEGIN NAVBAR  -->
+  <div class="main-container" id="container">
+
+    <div class="overlay"></div>
+    <div class="search-overlay"></div>
+  <div class="sub-header-container">
+    <header class="header navbar navbar-expand-sm">
+      <a href="javascript:void(0);" class="sidebarCollapse" data-placement="bottom"><svg
+          xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+          class="feather feather-menu">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </a>
+
+      <ul class="navbar-nav flex-row" style="gap: 10px;">
+        <li>
+          <div class="page-header">
+            <div class="page-title">
+              <nav class="breadcrumb-one" aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item"><a href="{% if role == 'CM/SM' %}{{ url_for('CM_SM_dashboard') }}{% elif role == 'MLRO' %}{{ url_for('MLROdashboard') }}{% elif role == 'AGM' %}{{ url_for('AGMdashboard') }}{% elif role == 'DGM/PO' %}{{ url_for('DGMdashboard') }}{% endif %}"
+                      class="text-blue font-weight-bold">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="feather feather-home">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                      </svg>
+                    </a></li>
+                    <li class="breadcrumb-item">
+                      <a href="{% if role == 'CM/SM' %}{{ url_for('CM_SM_NextLevel') }}{% elif role == 'MLRO' %}{{ url_for('MLRONextLevel') }}{% elif role == 'AGM' %}{{ url_for('AGMNextLevel') }}{% elif role == 'DGM/PO' %}{{ url_for('DGMNextLevel') }}{% endif %}" >Pending Cases</a>
+            
+                    </li>
+                    <li class="breadcrumb-item active text-blue font-weight-bold" aria-current="page">
+                      Voilation History
+            
+                    </li>
+                </ol>
+              </nav>
+            </div>
+          </div>
+        </li>
+        
+      </ul>
+    </header>
+  </div>
+  <!--  END NAVBAR  -->
+
+    <!--  BEGIN MAIN CONTAINER  -->
+
+    {% include 'sidebar.html' %}
+
+        <!--  BEGIN CONTENT PART  -->
+        <div id="content" class="container-fluid">
+          <!--  BEGIN CONTENT AREA  -->
+            <div class="row mt-4 bg-white justify-content-between">
+              <div class="row mt-4 justify-content-center">
+
+                <!-- TRANSACTION MONITORING -->
+                <div class="col-xl-3 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
+                  <div class="dropdown">
+                    <button class="btn  dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <div class="card shadow border-0 bg-gradient cards">
+                        <div class="card-body text-center">
+                          <h5 class="card-title mb-0 text-white ">TM (Transaction Monitoring)</h5>
+                        </div>
+                      </div>
+                    </button>
+                    <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+                        <!-- TM_1  -->
+                        <li class="dropdown-submenu">
+                          <p  class="dropdown-item" tabindex="-1" onclick="codeFilter('TM_1')">DV_TM_1</p>
+                          <ul class="dropdown-menu">
+                            <!-- TM_1_1 -->
+                            <li class="dropdown-submenu">
+                              <p class="dropdown-item" onclick="codeFilter('TM_1_1')">DV_TM 1.1</p>
+                              
+                                </li>
+                            <li class="dropdown-divider"></li>
+                            <!-- TM_1_2 -->
+                              <li class="dropdown-submenu">
+                                  <p class="dropdown-item" onclick="codeFilter('TM_1_2')">DV_TM 1.2</p>
+                                  
+                              </li>
+                              <li class="dropdown-divider"></li>
+                              <!-- TM_1_3 -->
+                            <li class="dropdown-submenu">
+                                <p class="dropdown-item" onclick="codeFilter('TM_1_3')">DV_TM 1.3<p>
+                              
+                            </li>
+                            <li class="dropdown-divider"></li>
+                            <!-- TM_1_4 -->
+                            <li class="dropdown-submenu">
+                                <p class="dropdown-item" onclick="codeFilter('TM_1_4')">DV_TM 1.4</p>
+                               
+                            </li>
+                            <li class="dropdown-divider"></li>
+                            
+              
+                          </ul>
+                        </li>
+                        <!-- TM_2 -->
+                        <li class="dropdown-divider"></li>
+                        <li class="dropdown-submenu">
+                            <p  class="dropdown-item" tabindex="-1" onclick="codeFilter('TM_2')">DV_TM_2</p>
+                            <ul class="dropdown-menu">
+                              <!-- TM_2_1 -->
+                              <li class="dropdown-submenu">
+                                <p class="dropdown-item" onclick="codeFilter('TM_2_1')">DV_TM 2.1</p>
+                              
+                              </li>
+                              <li class="dropdown-divider"></li>
+                              <!-- TM_2_2 -->
+                              <li class="dropdown-submenu">
+                                  <p class="dropdown-item" onclick="codeFilter('TM_2_2')">DV_TM 2.2</p>
+                                  
+                              </li>
+                              <li class="dropdown-divider"></li>
+                              <!-- TM_2_3 -->
+                              <li class="dropdown-submenu">
+                                  <p class="dropdown-item" onclick="codeFilter('TM_2_3')">DV_TM 2.3</p>
+                                 
+                              </li>
+                              <li class="dropdown-divider"></li>
+                              <!-- TM_2_4 -->
+                              <li class="dropdown-submenu">
+                                  <p class="dropdown-item" onclick="codeFilter('TM_2_4')">DV_TM 2.4</p>
+                               
+                              </li>
+                              <li class="dropdown-divider"></li>
+                              <!-- TM_2_5 -->
+                              <li class="dropdown-submenu">
+                                  <p class="dropdown-item" onclick="codeFilter('TM_2_5')">DV_TM 2.5</p>
+                                 
+                              </li>
+              
+                            </ul>
+                          </li>
+                          
+                        <!-- TM_3 -->
+                        <li class="dropdown-divider"></li>
+                        <li class="dropdown-submenu">
+                            <p  class="dropdown-item" tabindex="-1" onclick="codeFilter('TM_3')">DV_TM_3</p>
+                            <ul class="dropdown-menu">
+                              <!-- TM_3_1 -->
+                              <li class="dropdown-submenu">
+                                <p class="dropdown-item" onclick="codeFilter('TM_3_1')">DV_TM 3.1</p>
+                              
+                              </li>
+                              <li class="dropdown-divider"></li>
+                              <!-- TM_3_2 -->
+                              <li class="dropdown-submenu">
+                                  <p class="dropdown-item" onclick="codeFilter('TM_3_2')">DV_TM 3.2</p>
+                                
+                              </li>
+                              <li class="dropdown-divider"></li>
+                              <!-- TM_3_3 -->
+                              <li class="dropdown-submenu">
+                                  <p class="dropdown-item" onclick="codeFilter('TM_3_3')">DV_TM 3.3</p>
+                                
+                              </li>
+                              <li class="dropdown-divider"></li>
+                              <!-- TM_3_4 -->
+                              <li class="dropdown-submenu">
+                                  <p class="dropdown-item" onclick="codeFilter('TM_3_4')">DV_TM 3.4</p>
+                                 
+                              </li>
+                              <li class="dropdown-divider"></li>
+                              <!-- TM_3_5 -->
+                              <li class="dropdown-submenu">
+                                  <p class="dropdown-item" onclick="codeFilter('TM_3_5')">DV_TM 3.5</p>
+                                
+                              </li>
+                              <li class="dropdown-divider"></li>
+                              <!-- TM_3_6 -->
+                              <li class="dropdown-submenu">
+                                  <p class="dropdown-item" onclick="codeFilter('TM_3_6')">DV_TM 3.6</p>
+                               
+                              </li>
+
+
+                            </ul>
+                          </li>
+                          
+                        <!-- TM_4 -->
+                        <li class="dropdown-divider"></li>
+                        <li class="dropdown-submenu">
+                            <p  class="dropdown-item" tabindex="-1" onclick="codeFilter('TM_4')">DV_TM_4</p>
+                            <ul class="dropdown-menu">
+                              <!-- TM_4_1 -->
+                              <li class="dropdown-submenu">
+                                <p class="dropdown-item" onclick="codeFilter('TM_4_1')">DV_TM 4.1</p>
+                              
+                              </li>
+                              <li class="dropdown-divider"></li>
+                              <!-- TM_4_2 -->
+                              <li class="dropdown-submenu">
+                                  <p class="dropdown-item" onclick="codeFilter('TM_4_2')">DV_TM 4.2</p>
+                                 
+                              </li>
+                              <li class="dropdown-divider"></li>
+                              <!-- TM_4_3 -->
+                              
+                            </ul>
+                          </li>
+
+                          <!-- TM_6 -->
+                          <li class="dropdown-divider"></li>
+                        <li class="dropdown-submenu">
+                            <p class="dropdown-item" tabindex="-1" onclick="codeFilter('TM_6')">DV_TM_6</p>
+                            <ul class="dropdown-menu">
+                              <!-- TM_6_1 -->
+                              <li class="dropdown-submenu">
+                                <p class="dropdown-item" onclick="codeFilter('TM_6_1')">DV_TM 6.1</p>
+                             
+                              </li>
+                      
+                            </ul>
+                          </li>
+
+                          <!-- TM_8 -->
+                          <li class="dropdown-divider"></li>
+                          <li class="dropdown-submenu">
+                              <p class="dropdown-item" tabindex="-1" onclick="codeFilter('TM_8')">DV_TM_8</p>
+                              <ul class="dropdown-menu">
+                                <!-- TM_8_1 -->
+                                <li class="dropdown-submenu">
+                                  <p class="dropdown-item" onclick="codeFilter('TM_8_1')">DV_TM 8.1</p>
+                              
+                                </li>
+                                <li class="dropdown-divider"></li>
+                                <!-- TM_8_2 -->
+                                <li class="dropdown-submenu">
+                                  <p class="dropdown-item" onclick="codeFilter('TM_8_2')">DV_TM 8.2</p>
+                                 
+                                </li>
+                                <li class="dropdown-divider"></li>
+                                <!-- TM_8_3 -->
+                                <li class="dropdown-submenu">
+                                  <p class="dropdown-item" onclick="codeFilter('TM_8_3')">DV_TM 8.3</p>
+                                 
+                                </li>
+                        
+                              </ul>
+                            </li>
+                      </ul>
+                      
+                  </div> 
+                </div>
+                
+              
+                <!-- TYPOLOGY -->
+                <div class="col-xl-3 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
+                <div class="dropdown">
+                  <button class="btn dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <div class="card shadow border-0 bg-gradient cards">
+                      <div class="card-body text-center">
+                        <h5 class="card-title mb-0 text-white ">TY (Typology)
+
+                        </h5>
+                      </div>
+                    </div>
+                  </button>
+                  <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+                      <!-- TY_1  -->
+                      <li class="dropdown-submenu">
+                        <p  class="dropdown-item" tabindex="-1" onclick="codeFilter('TY_1')">DV_TY_1</p>
+                        <ul class="dropdown-menu">
+                          <!-- TY_1_1 -->
+                          <li class="dropdown-submenu">
+                            <p class="dropdown-item" onclick="codeFilter('TY_1_1')">DV_TY 1.1</p>
+                           
+                          </li>
+                          <li class="dropdown-divider"></li>
+                          <!-- TY_1_2 -->
+                          <li class="dropdown-submenu">
+                              <p class="dropdown-item" onclick="codeFilter('TY_1_2')">DV_TY 1.2</p>
+                            
+                          </li>
+                          <li class="dropdown-divider"></li>
+                          <!-- TY_1_3 -->
+                          <li class="dropdown-submenu">
+                              <p class="dropdown-item" onclick="codeFilter('TY_1_3')">DV_TY 1.3</p>
+                             
+                          </li>
+                          <li class="dropdown-divider"></li>
+                          <!-- TY_1_4 -->
+                          <li class="dropdown-submenu">
+                              <p class="dropdown-item" onclick="codeFilter('TY_1_4')">DV_TY 1.4</p>
+                            
+                          </li>
+                          <li class="dropdown-divider"></li>
+                          <!-- TY_1_5 -->
+                          <li class="dropdown-submenu">
+                              <p class="dropdown-item" onclick="codeFilter('TY_1_5')">DV_TY 1.5</p>
+                              
+                          </li>
+              
+                        </ul>
+                      </li>
+                      
+                      <!-- TY_10 -->
+                      <li class="dropdown-divider"></li>
+                      <li class="dropdown-submenu">
+                          <p  class="dropdown-item" tabindex="-1" onclick="codeFilter('TY_10')">DV_TY_10</p>
+                          <ul class="dropdown-menu">
+                            <!-- TY_10_5 -->
+                            <li class="dropdown-submenu">
+                              <p class="dropdown-item" onclick="codeFilter('TY_10.5')">DV_TY 10.5</p>
+                             
+                            </li>
+              
+                          </ul>
+                        </li>
+                      
+                    </ul>
+                    
+                </div> 
+                </div>
+              
+                <!-- TYPOLOGY -->
+              
+                <!-- RISK MANAGEMENT -->
+                <div class="col-xl-3 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
+                  <div class="dropdown">
+                    <button class="btn dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <div class="card shadow border-0 bg-gradient cards">
+                        <div class="card-body text-center">
+                          <h5 class="card-title mb-0 text-white ">RM ( Risk Management )</h5>
+                        </div>
+                      </div>
+                    </button>
+                    <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+                        <!-- RM_1  -->
+                        <li class="dropdown-submenu flex-row-reverse">
+                          <p class="dropdown-item" tabindex="-1" onclick="codeFilter('RM_1')">DV_RM_1</p>
+                          <ul class="dropdown-menu leftSide" >
+                            <!-- RM_1_1 -->
+                            <li class="dropdown-submenu">
+                              <p class="dropdown-item" onclick="codeFilter('RM_1_1')">DV_RM 1.1</p>
+                           
+                            </li>
+                            <li class="dropdown-divider"></li>
+                            <!-- RM_1_3 -->
+                            <li class="dropdown-submenu">
+                                <p class="dropdown-item" onclick="codeFilter('RM_1_3')">DV_RM 1.3</p>
+                               
+                            </li>
+                            <li class="dropdown-divider"></li>
+                            <!-- RM_1_4 -->
+                            <li class="dropdown-submenu">
+                                <p class="dropdown-item" onclick="codeFilter('RM_1_4')">DV_RM 1.4</p>
+                                
+                            </li>
+                            <li class="dropdown-divider"></li>
+                          </ul>
+                        </li>
+                        <!-- RM_2 -->
+                        <li class="dropdown-divider"></li>
+                        <li class="dropdown-submenu">
+                            <p  class="dropdown-item" tabindex="-1" onclick="codeFilter('RM_2')">DV_RM_2</p>
+                            <ul class="dropdown-menu leftSide">
+                              <!-- RM_2_1 -->
+                              <li class="dropdown-submenu">
+                                <p class="dropdown-item" onclick="codeFilter('RM_2_1')">DV_RM 2.1</p>
+                                
+                              </li>
+                              <li class="dropdown-divider"></li>
+                              <!-- RM_2_2 -->
+                              <li class="dropdown-submenu">
+                                  <p class="dropdown-item" onclick="codeFilter('RM_2_2')">DV_RM 2.2</p>
+                                 
+                              </li>
+                              <li class="dropdown-divider"></li>
+                              <!-- RM_2_3 -->
+                              <li class="dropdown-submenu">
+                                  <p class="dropdown-item" onclick="codeFilter('RM_2_3')">DV_RM 2.3</p>
+                               
+                              </li>
+                              <li class="dropdown-divider"></li>
+                              <!-- RM_2_4 -->
+                              <li class="dropdown-submenu">
+                                  <p class="dropdown-item" onclick="codeFilter('RM_2_4')">DV_RM 2.4</p>
+                                  
+                              </li>
+                              <li class="dropdown-divider"></li>
+                              <!-- RM_1_5 -->
+                              <li class="dropdown-submenu">
+                                  <p class="dropdown-item" onclick="codeFilter('RM_2_5')">DV_RM 2.5</p>
+                                 
+                              </li>
+                            </ul>
+                          </li>
+                      </ul>
+                  </div>
+                </div>
+
+                <div class="col-xl-3 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing ">
+                  <div class="dropdown">
+                    <button class="btn dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <div class="card shadow border-0 bg-gradient cards">
+                        <div class="card-body text-center">
+                          <h5 class="card-title mb-0 text-white " onclick="codeFilter('')">Show All Data</h5>
+                        </div>
+                      </div>
+                    </button>
+                  </div>
+                </div>
+                
+           
+       </div>
+            <div class="tab-content" id="simpletabContent">
+                <div class="tab-pane fade show active" id="customerpre" role="tabpanel" aria-labelledby="customerpre-tab">
+                    
+           
+          <!-- corperate details end  -->
+                <div class="col-xl-12 col-lg-12 col-sm-12 mt-5 layout-spacing">
+                    <div class="widget-content widget-content-area ">
+                        <div class="table-responsive mb-4">
+                            <section>
+
+                                <table id="example" class="display nowrap" style="width: 100%">
+                                  <thead>
+                                    <tr>
+                                      <th>Code</th>
+                                      <th>Account<br/>Number</th>
+                                      <th class="">Customer<br/> No</th>
+                                      <th class="d-none">Branch</th>
+                                      <th class="d-none">Allocated Date</th>
+                                      <th class="d-none">Account Type</th>
+                                      <th>Overall Risk<br/> Rating</th>
+                                      <th>Scenarios <br/>violated</th>
+                                      <th>No.of <br/>Transactions</th>
+                                      <th>Violation Amount</th>
+                                      <th class="d-none">Ticket ID</th>
+                                   
+                                    </tr>
+                                  </thead>
+                                  <tbody id="tableBody">
+                                     {% for code,values in data.items() %}
+                                        {% for value in values %}
+                                    <tr>
+                                      <td>{{ code }}</td>
+                                      {% if 'Account Number' in value.keys() %}
+                                      {% if '-' in value['Account Number']|string %}
+                                      {% set val=value['Account Number']|string %}
+                                      <td>{{value['Account Number'][0:val.index('-')]}}</td>
+                                      {% else %}
+                                      <td>{{value['Account Number']}}</td>
+                                      {% endif %}
+                                      {% else %}
+                                      <td>-</td>
+                                      {% endif %}
+          
+                                      {% if 'Customer ID' in value.keys() %}
+                                      
+                                      <td class="">
+                                        {{value['Customer ID']}}
+                                        
+                                      </td>
+                                      {% else %}
+                                     
+                                      <td>
+                                         -
+                                      </td>
+                                      
+                                      {% endif %}
+          
+                                      {% if 'Branch' in value.keys() %}
+                                      <td class="d-none">{{value['Branch']}}</td>
+                                      {% else %}
+                                      <td class="d-none">Kukatpali</td>
+                                      {% endif %}
+          
+                                       {% if 'alert_allocated_on' in value.keys() %}
+                                      <td class="d-none">{{value['alert_allocated_on']}}</td>
+                                      {% endif %}
+          
+                                       {% if 'Type of account' in value.keys() %}
+                                      <td class="d-none">{{value['Type of account']}}</td>
+                                      {% else %}
+                                      <td class="d-none">----</td>
+                                      {% endif %}
+          
+                                      {% if 'Risk Rating' in value.keys() %}
+                                      <td>{{value['Risk Rating']}}</td>
+                                      {% else %}
+                                      <td>Medium</td>
+                                      {% endif %}
+          
+                                      {% if 'Scenarios Violated' in value.keys() %}
+                                      <td>{{value['Scenarios Violated']}}</td>
+                                      {% else %}
+                                      <td>
+                                        1
+                                      </td>
+                                      {% endif %}
+          
+                                      {% if 'Transactions Number' in value.keys() %}
+                                      <td>{{value['Transactions Number']}}</td>
+                                      {% else %}
+                                      <td>1</td>
+                                      {% endif %}
+          
+                                      {% if 'Transaction Amount' in value.keys() %}
+                                      <td>{{value['Transaction Amount']}}</td>
+                                      {% else %}
+                                      <td>-</td>
+                                      {% endif %}
+          
+                                      {% if 'ticket_id' in value.keys() %}
+                                      <td class="d-none">{{value['ticket_id']}}</td>
+                                      {% endif %}
+                                      
+                                   
+                                    
+                                    </tr>
+          
+                                
+          
+          
+          
+                                    
+                                     {% endfor %}
+                      {% endfor %}
+                                    
+                                    <!-- Add more rows with your own data as needed -->
+                                  </tbody>
+          
+                                </table>
+          
+                              </section>
+                        </div>
+                    </div>
+                </div>
+                  </div>
+                
+          
+        
+                  {% include 'footer.html' %}
+
+            </div>
+      </div>
+        <!--  END CONTENT PART  -->
+    <!-- END MAIN CONTAINER -->
+  </div>
+
+     <!-- BEGIN GLOBAL MANDATORY SCRIPTS -->
+  <script src="../static/assets/js/libs/jquery-3.1.1.min.js"></script>
+  <script src="../static/bootstrap/js/popper.min.js"></script>
+  <script src="../static/bootstrap/js/bootstrap.min.js"></script>
+  <script src="../static/plugins/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+  <script src="../static/assets/js/app.js"></script>
+
+  <!-- viwe JS start -->
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/js/bootstrap.min.js"></script>
+
+
+  <!-- viwe JS ends -->
+
+
+  <script type="text/javascript" language="javascript"
+    src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+  <script type="text/javascript" language="javascript"
+    src="https://cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
+  
+    <script>
+      $(document).ready(function () {
+          $('#usersTab').click(function () {
+              $('#addUserTab, #allUsersTab').toggle();
+          });
+      });
+  </script>
+  <script>
+
+    $(document).ready(function () {
+      App.init();
+    });
+
+    var dataTable;
+    document.addEventListener("DOMContentLoaded", function () {
+  var isDateFiltering = false;
+  var dateArr = []
+
+
+  // Initialize DataTable
+  $(document).ready(function () {
+    dataTable = $("#example").DataTable({
+      rowReorder: {
+          selector: "td:nth-child(2)",
+        },
+        responsive: true,
+         paging: false, // Disable initial pagination
+  scrollY: "300px", // Set the height of the scrollable area
+  scrollCollapse: true, // Enable the scrollbar to collapse
+  scrollInfinite: true, // Enable infinite scrolling
+  info: true
+      })
+    })
+  })
+  
+
+    function codeFilter(code){
+      
+      if (dataTable) {
+        if (code) {
+            // If code is provided, apply the search
+            dataTable.columns().search('');
+            dataTable.columns(0).search(code);
+        } else {
+            // If code is not provided, clear the search, clear the table, and draw
+            dataTable.search('').columns().search('').draw();
+            return; // exit the function to prevent further processing
+        }
+
+        // Redraw the table to apply the filter
+        dataTable.draw();
+    } else {
+        console.error("DataTable is not defined.");
+    }
+
+    
+    }
+
+  </script>
+  <script src="../static/assets/js/custom.js"></script>
+  <!-- END GLOBAL MANDATORY SCRIPTS -->
+
+  <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
+  <script src="../static/plugins/apex/apexcharts.min.js"></script>
+
+  <script src="../static/assets/js/dashboard/dash_1.js"></script>
+
+  <!-- <script src="assets/js/tables.js/tableCheckBox.js"></script> -->
+  <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
+
+  <script src="../static/plugins/table/datatable/datatables.js"></script>
+
+  <script type="text/javascript" language="javascript"
+    src="https://cdn.datatables.net/responsive/2.3.0/js/dataTables.responsive.min.js">
+  </script>
+  <!-- <script>
+    $(document).ready(function () {
+        var isNavigatingAway = false;
+  
+        // Update the user's active status every minute
+        setInterval(function () {
+            if (!isNavigatingAway) {
+                $.ajax({
+                    type: "POST",
+                    url: "/update_active_status",
+                    success: function (response) {
+                        console.log("Active status updated");
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Error updating active status:", error);
+                    }
+                });
+            }
+        }, 60000); // 1 minute interval
+  
+        // Add event listener for click events on links
+        $(document).on('click', 'a', function () {
+            isNavigatingAway = true;
+        });
+  
+        // Add event listener for form submit events
+        $(document).on('submit', 'form', function () {
+            isNavigatingAway = true;
+        });
+  
+        // Send a Beacon request when the tab is closed
+        window.addEventListener('pagehide', function () {
+            if (!isNavigatingAway) {
+                navigator.sendBeacon('/update_status');
+                console.log("Status updated to null via Beacon");
+            }
+        });
+        
+    });
+  
+  </script> -->
+
+</body>
+
+</html>

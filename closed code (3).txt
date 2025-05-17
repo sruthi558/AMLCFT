@@ -1,0 +1,180 @@
+===========================new end points=============================
+
+@app.route('/online_STR_download_page',methods=['POST','GET'])
+def online_STR_download_page():
+    
+        data = []
+        all_collections = [CASE_collection]
+        array_names = ["output_data1", "output_data2", "output_data3"]
+        for collection, array_name in product(all_collections, array_names):
+            pipeline = [
+                {
+                    "$unwind": f"${array_name}"
+                },
+                {
+                    "$match": {
+                        f"{array_name}.finalReport":"Approved",
+                        f"{array_name}.finalReport_Submited_on":{"$exists":True}
+                    }
+                },
+                {
+                    "$group": {
+                "_id": "code",
+                "data":{"$push":{
+                    "AccountNumber": f"${array_name}.Account Number",
+                    "Date": f"${array_name}.finalReport_Submited_on",
+                    "TicketId": f"${array_name}.ticket_id",
+                }},
+
+            }
+                }
+            ]
+            data_from_collection = collection.aggregate(pipeline)
+            for doc in data_from_collection:
+                data = (doc['data'])
+        print(data)
+        return render_template('online_STR_Downloads.html',data=data)
+
+
+@app.route('/offline_STR_download_page',methods=['POST','GET'])
+def offline_STR_download_page():
+    
+        data = []
+        all_collections = [offline_collection]
+        array_names = ["data"]
+        for collection, array_name in product(all_collections, array_names):
+            pipeline = [
+                {
+                    "$unwind": f"${array_name}"
+                },
+                {
+                    "$match": {
+                        f"{array_name}.finalReport":"Approved",
+                        f"{array_name}.finalReport_Submited_on":{"$exists":True}
+                    }
+                },
+                {
+                    "$group": {
+                "_id": "code",
+                "data":{"$push":{
+                    "AccountNumber": f"${array_name}.AccountNumber",
+                    "Date": f"${array_name}.finalReport_Submited_on",
+                    "TicketId": f"${array_name}.ticket_id",
+                }},
+
+            }
+                }
+            ]
+            data_from_collection = collection.aggregate(pipeline)
+            for doc in data_from_collection:
+                data = (doc['data'])
+
+        print(data)
+        return render_template('offline_STR_Downloads.html',data=data)
+=======================================================================================
+
+================existing end points ( replace if needed )==============================
+
+@app.route('/download_pdf_str', methods=['POST'])
+def download_pdf_str():
+
+    accNo = request.form.get('accNumber')
+    dateSubmited = request.form.get('date')
+    TicketId = request.form.get('TicketId')
+    date_object = datetime.strptime(dateSubmited, "%Y-%m-%d %H:%M:%S")
+
+
+    all_collections = [CASE_collection]  
+    array_names = ["output_data1", "output_data2", "output_data3"]
+
+
+    for collection, array_name in product(all_collections, array_names):
+        query = {f"{array_name}.ticket_id": TicketId,f"{array_name}.finalReport": "Approved"}
+        cursor = collection.find(query)
+
+        for document in cursor:
+            # Process the matched document as needed
+            matching_object = document.get(array_name, {})
+
+
+    if matching_object:
+            
+            for obj in matching_object:
+                print("his is obj : ",obj)
+                if obj["ticket_id"] == TicketId:
+        
+
+                    temp_dir = tempfile.mkdtemp()
+                    temp_csv_filename = os.path.join(temp_dir, "str_data.csv")
+                    temp_pdf_filename = os.path.join(temp_dir, "str_data.pdf")
+
+                    flattened_data_list = [flatten_data(obj) ]
+                    print("flattened_data_list : ",flattened_data_list)
+                    required_columns = [ 'Account Number','Customer ID', 'Nature of account', 'Customer Profile',
+                                        'PAN', 'Type of account', 
+                                        'Transaction Amount', 'Transaction Date', 'Transaction Type', 'Transaction Category',
+                                        'SuspeciousDuoCrime', 'Classification',
+                                        'SuspeciousDuoComplexTr', 'SuspeciousDuoNoeco', 'terrorisumFunding',
+                                        'LEAinformed' , 'reportCase',
+                                        'additionalInfo', 'priorityRAG', 'cumulativeCrtTurnover',
+                                        'cumulativeDTTurnover', 'cumulativeDepositTurnover', 'cumulativeWithdrawalTurnover',
+                                        'NumTransactionReport', 'Raise_STR']
+
+                    df = pd.DataFrame(flattened_data_list)
+
+                    print("DataFrame content:", df)
+
+                    df.to_csv(temp_csv_filename, index=False)
+
+
+                    list_of_dicts = df.to_dict(orient='records')
+
+                    # Convert CSV to PDF using reportlab
+                    generate_pdf_from_csv(temp_csv_filename, temp_pdf_filename, list_of_dicts,obj["CaseComment"],obj["Case_Details"])
+
+                    if os.path.exists(temp_pdf_filename):
+                        return send_from_directory(temp_dir, "str_data.pdf", as_attachment=True)
+
+    return render_template('FINnet_report.html', message='No approved cases found')
+
+def generate_pdf_from_csv(csv_filename, pdf_filename, approved_objects,caseComments,caseDetails):
+    buffer = BytesIO()
+    pdf = SimpleDocTemplate(buffer, pagesize=letter, bottomMargin=20)
+    styles = getSampleStyleSheet()
+
+    story = []
+
+    for obj in approved_objects:
+        # obj_data = "(1)Full name and address of the account holder:", f"{obj['Customer Name']}", f"{obj['Address']}", "Pincode-",f"{obj['Pincode']}", f"{obj['City']}","(2) Date of Birth (for Individual)/date of Incorporation for the company):",f"{obj['DOB']}","(3)Pan No:",f"{obj['PAN']}", "(4) Passport No:","None","(5)Other Identification documents:","None","(6) IEC Code:","None", "(7)GSTIN:","None", "(8)Mobile Number/Landline No:-",f"{obj['Mobile Number']}", "e-mail id:","None","(9)Other facilities availed:","None", "(10) Risk category:",f"{obj['priorityRAG']}","(11) Name of the authorized signing Authorities:","None", "(12)KYC Compliance status:","None","(13) Date of last KYC updation:","None","(14)Profile/nature of bussiness:","None","(15)Annual Income as declared in KYC(Amount in Rs. in Lacs):","None","(16)Annual Turnover of business as declared in KYC(Amount in Rs in Lacs):","None", "(17) Beneficial ownerisjas determined under Rule 9(3)of PMLA Rulest:","None","(18) Bank and Branch details:",f"{obj['Bank Name']}","Branch",f"{obj['Bank Location/Address']}", f"{obj['Bank State']}", "(19) Bank Account No:",f"{obj['Account Number']}","(20) Bank Account Type:",f"{obj['Type of account']}","(21) Bank A/c opened on:",f"{obj['Acc_Opening_Date']}","(22)Bank Account Status:", "None","(23)Quantum of transactions for current year:","None","(24)Debit Turnover: Rs." ,f"{obj['cumulativeWithdrawalTurnover']}" ,"Lacs (in cash Rs.0.00 Lacs)and Credit Turnover: Rs.", f"{obj['cumulativeDepositTurnover']}" ,"Lacs(in cash Rs.0.00 Lacs)", "(24)Quantum of transactions for previous years:","None"," Debit Turnover: Rs.", 0.00 ,"Lacstin cash Rs 0.00 Lacs) and Credit Turnover:Rs", 0.00 ,"Lacs(in cash Rs.0.00 LacsIFY 2021-22: Debit Turnover: Rs. 0.00 Lacs (in cash Rs. 0:00 Lacsjand Credit Turnover: Rs.0.00 Lacs(in cash Rs.0.00 Lacs), FY 2020-21:Debit Turnover: Rs 0.00 Lacs (in cash Rs.0.00 Lacs)and Credit Turnover: Rs.0.00 Lacs(in cash Rs.0.00 Lacs).", "(25)Balance in account on date of filing STR:","None", "(26) Details of earlier STRs filed on account or account holders/related persons:","None", "(27) Reactive STRs:","None", "(28)Adverse Media Report:",f"{obj['reportCase']}", "(29) Ground of Suspicion: (a)",f"{obj['mlrocomment']}","(b)",f"{obj['cmcomment']}","(c)",f"{obj['agmcomment']}","(d)",f"{obj['dgmcomment']}","(30) Details of Investigation :","None"
+        obj_data = "(1)Full name and address of the account holder:"f"{obj.get('Customer Name', 'None')}",f"{obj.get('Address', 'None')}","Pincode-", f"{obj.get('Pincode', 'None')}",f"{obj.get('City', 'None')}""(2) Date of Birth (for Individual)/date of Incorporation for the company):"f"{obj.get('DOB', 'None')}""(3)Pan No:"f"{obj.get('PAN', 'None')}""(4) Passport No:""None""(5)Other Identification documents:" "None""(6) IEC Code:""None""(7)GSTIN:" "None""(8)Mobile Number/Landline No:-" f"{obj.get('Mobile Number', 'None')}","e-mail id:" "None""(9)Other facilities availed:" "None""(10) Risk category:" f"{obj.get('priorityRAG', 'None')}""(11) Name of the authorized signing Authorities:" "None""(12)KYC Compliance status:" "None""(13) Date of last KYC updation:" "None""(14)Profile/nature of business:" "None""(15)Annual Income as declared in KYC(Amount in Rs. in Lacs):""None""(16)Annual Turnover of business as declared in KYC(Amount in Rs in Lacs):" "None""(17) Beneficial owner is determined under Rule 9(3) of PMLA Rulest:" "None""(18) Bank and Branch details:" f"{obj.get('Bank Name', 'None')}","Branch", f"{obj.get('Bank Location/Address', 'None')}",f"{obj.get('Bank State', 'None')}""(19) Bank Account No:"f"{obj.get('Account Number', 'None')}""(20) Bank Account Type:" f"{obj.get('Type of account', 'None')}""(21) Bank A/c opened on:" f"{obj.get('Acc_Opening_Date', 'None')}""(22)Bank Account Status:""None""(23)Quantum of transactions for current year:""None""(24)Debit Turnover: Rs." f"{obj.get('cumulativeWithdrawalTurnover', 'None')}""Lacs (in cash Rs.0.00 Lacs)and Credit Turnover: Rs." f"{obj.get('cumulativeDepositTurnover', 'None')}""Lacs(in cash Rs.0.00 Lacs)""(24)Quantum of transactions for previous years:" "None"," Debit Turnover: Rs.", "0.00", "Lacs tin cash Rs 0.00 Lacs) and Credit Turnover:Rs", "0.00","Lacs(in cash Rs.0.00 LacsIFY 2021-22: Debit Turnover: Rs. 0.00 Lacs (in cash Rs. 0:00 Lacsjand Credit Turnover: Rs.0.00 Lacs(in cash Rs.0.00 Lacs), FY 2020-21:Debit Turnover: Rs 0.00 Lacs (in cash Rs.0.00 Lacs)and Credit Turnover: Rs.0.00 Lacs(in cash Rs.0.00 Lacs).","(25)Balance in account on date of filing STR:", "None","(26) Details of earlier STRs filed on account or account holders/related persons:", "None","(27) Reactive STRs:", "None","(28)Adverse Media Report:", f"{obj.get('reportCase', 'None')}","(29) Ground of Suspicion: (a)", f"{obj.get('mlrocomment', 'None')}","(b)", f"{obj.get('cmcomment', 'None')}","(c)", f"{obj.get('agmcomment', 'None')}","(d)", f"{obj.get('dgmcomment', 'None')}","(30) Details of Investigation :", *[f"{key}:{value}" for key,value in caseDetails.items()]
+     
+        obj_text = str(obj_data)[1:-1]
+        
+
+        # Create a Paragraph for the object's text
+        obj_paragraph = Paragraph(obj_text.replace("'"," "), styles['Normal'])
+
+        story.append(obj_paragraph)
+        # story.append(Spacer(1, 12))
+
+        # Add a page break after each object's data (limit to 2 pages)
+        story.append(PageBreak())
+
+# Add the main story to the PDF
+    pdf.build(story)
+
+    buffer.seek(0)
+    with open(pdf_filename, 'wb') as f:
+       f.write(buffer.read())
+======================================================================================
+
+================= /update_offline_str_dgm [ replace it ] ============================
+
+ offline_collection.update_one(
+            {'data.ticket_id': ticket_id},
+            {'$set': {'data.$.comment.DGM_comments': comments,'data.$.finalReport': approval_status,'data.$.finalReport_Submited_on': midnight_datetime}}
+            
+        )
+
+
+
